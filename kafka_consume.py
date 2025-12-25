@@ -1,9 +1,13 @@
 from kafka import KafkaConsumer
+import configparser
 import cdc_load_sql as c
 import json
 
 def cdc_consume():
-    KAFKA_BOOTSTRAP_SERVERS = "localhost:9092"
+    config = configparser.ConfigParser()
+    config.read('config/config.ini')
+
+    KAFKA_BOOTSTRAP_SERVERS = config.get('Kafka', 'host')
     KAFKA_TOPIC_MONGO_CDC = "mongo-cdc"
     KAFKA_CONSUMER_GROUP_ID = "mongo_cdc_db"
 
@@ -18,6 +22,7 @@ def cdc_consume():
 
     print(f"Listening for messages on topic: {KAFKA_TOPIC_MONGO_CDC}...")
     try:
+
         for message in consumer:
             try:
                 print(f"Received message: {message.value}")
@@ -25,8 +30,9 @@ def cdc_consume():
             except Exception as e:
                 print(f"Failed to process message: {e}")
                 print(f"Skipping message: {message.value}")
-                continue  # move to next message
+                continue
+
     except Exception as e:
         print(f"Error connecting or loading data: {e}")
     finally:
-        consumer.close()  # Ensure proper resource release
+        consumer.close()

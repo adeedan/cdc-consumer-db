@@ -1,12 +1,16 @@
 import psycopg2 as pg
+import configparser
 from utils import jsonParse as jp
 
 def cdc_db_insert(json_str):
-    db_user = "Python_User"
-    db_password = "12345"
-    db_host = "localhost"
-    db_port = "5432"
-    db_name = "PARK_MASTER"
+    config = configparser.ConfigParser()
+    config.read('config/config.ini')
+
+    db_host = config.get('Postgre', 'db_host')
+    db_name = config.get('Postgre', 'db_name')
+    db_user = config.get('Postgre', 'db_user')
+    db_port = config.get('Postgre', 'db_port')
+    db_password = config.get('Postgre', 'db_password')
 
     try:
         connection = pg.connect(
