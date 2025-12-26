@@ -41,6 +41,7 @@ def insert_into_park(cursor, park):
             park["states"], park["directionURL"], park["directionInfo"],
             park["weatherInfo"], park["country"], park["lastUpdatedDate"]
         ]
+
     cursor.execute(sql, values)
 
 def insert_into_activities(cursor, activity_rows):
@@ -66,6 +67,8 @@ def update_parks(cursor, park):
             park["weatherInfo"], park["country"], park["lastUpdatedDate"],park["id"]
         ]
     cursor.execute(park_sql, values)
+
+    print(park_sql, values)
 
 def update_activities(cursor, activity_rows, park_id):
     activity_sql = "delete from park_activity where _id=%s"

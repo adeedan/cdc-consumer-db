@@ -24,14 +24,9 @@ def cdc_consume():
     try:
 
         for message in consumer:
-            try:
-                print(f"Received message: {message.value}")
-                c.cdc_db_insert(message.value)
-            except Exception as e:
-                print(f"Failed to process message: {e}")
-                print(f"Skipping message: {message.value}")
-                continue
-
+            print("processing...")
+            #print(f"Received message: {message.value}")
+            c.cdc_db_insert(message.value)
     except Exception as e:
         print(f"Error connecting or loading data: {e}")
     finally:
